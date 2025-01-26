@@ -1,20 +1,20 @@
 #!/usr/bin/python3
-"""Change making module.
-"""
+"""Total Count Module"""
 
 
 def makeChange(coins, total):
+    """Return the minimum number of coins to make up the total"""
     if total <= 0:
         return 0
 
-    # Create an array to store the minimum number of coins required to reach each value
-    min_coins = [float('inf')] * (total + 1)
-    min_coins[0] = 0
+    # Create DP array, initialized to a very large value
+    dp = [float('inf')] * (total + 1)
+    dp[0] = 0  # Base case: 0 coins are needed for total = 0
 
+    # Fill the DP array
     for coin in coins:
-        for i in range(coin, total + 1):
-            # Update the minimum number of coins required for each value
-            min_coins[i] = min(min_coins[i], min_coins[i - coin] + 1)
+        for amount in range(coin, total + 1):
+            dp[amount] = min(dp[amount], dp[amount - coin] + 1)
 
-    # Return the minimum number of coins required to reach the total value
-    return min_coins[total] if min_coins[total] != float('inf') else -1
+    # If the value at dp[total] is still inf, it means it's impossible
+    return dp[total] if dp[total] != float('inf') else -1
